@@ -20,5 +20,5 @@ WORKDIR /app
 # Install PySpark + Database tools + Retry tools
 RUN pip install --no-cache-dir pyspark==3.4.1 pandas minio sqlalchemy psycopg2-binary tenacity
 
-COPY batch_processor.py .
-CMD ["python", "batch_processor.py"]
+COPY spark_job.py .
+CMD ["python", "spark_job.py"]
