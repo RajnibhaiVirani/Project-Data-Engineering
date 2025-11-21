@@ -23,7 +23,8 @@ services:
       timeout: 5s
       retries: 6
     volumes:
-      - minio_data:/data
+      # CHANGE: Using a local folder to force a hard reset of storage credentials
+      - ./minio_data_local:/data
     networks:
       - pipeline_network
 
@@ -106,7 +107,6 @@ services:
       - pipeline_network
 
 volumes:
-  minio_data:
   pgdata:
 
 networks:

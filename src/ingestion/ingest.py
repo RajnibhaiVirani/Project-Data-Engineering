@@ -12,6 +12,9 @@ SOURCE_FILE = "/app/data/bankdataset.csv"
 DEST_FILE = "bankdataset.csv"
 
 def get_minio_client():
+    # DEBUG: Printing credentials to verify they match docker-compose
+    print(f"DEBUG: Connecting to {MINIO_HOST}")
+    print(f"DEBUG: User={MINIO_ACCESS_KEY}")
     # Helper function to connect to the storage layer
     return Minio(MINIO_HOST, access_key=MINIO_ACCESS_KEY, secret_key=MINIO_SECRET_KEY, secure=False)
 
@@ -21,7 +24,7 @@ def upload_to_lake(client):
     if not client.bucket_exists(BUCKET_NAME):
         client.make_bucket(BUCKET_NAME)
         print(f"--> Created new bucket: {BUCKET_NAME}")
-
+    
     print(f"--> Uploading {DEST_FILE} to the Data Lake...")
     client.fput_object(BUCKET_NAME, DEST_FILE, SOURCE_FILE)
     print("--> Success! File is safely stored in MinIO.")
