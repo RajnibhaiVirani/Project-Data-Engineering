@@ -8,7 +8,7 @@ services:
   # 1. My Data Lake (Storage Layer)
   # I chose MinIO because it mimics AWS S3 but runs locally.
   minio_storage:
-    image: minio/minio:RELEASE.2023-10-05T00-00-00Z
+    image: minio/minio:latest
     container_name: minio_server
     ports:
       - "9000:9000" # API port
