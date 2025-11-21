@@ -1,35 +1,30 @@
 version: '3.8'
 
-# I am defining my microservices architecture here.
-# I removed Kafka/Zookeeper to keep the system lightweight for my local machine,
-# focusing on the Batch processing requirement using Spark and MinIO.
-
 services:
-  # 1. My Data Lake (Storage Layer)
-  # I chose MinIO because it mimics AWS S3 but runs locally.
+  # 1. Storage (MinIO)
   minio_storage:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2024-01-18T22-51-28Z
     container_name: minio_server
     ports:
-      - "9000:9000" # API port
-      - "9001:9001" # Console port
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: "admin_user"
       MINIO_ROOT_PASSWORD: "secure_password"
+      MINIO_BROWSER: "off"
     command: server /data --console-address ":9001"
+    # UPDATED HEALTHCHECK: Using built-in health endpoint which is more reliable
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
       timeout: 5s
-      retries: 6
+      retries: 10
     volumes:
-      # CHANGE: Using a local folder to force a hard reset of storage credentials
-      - ./minio_data_local:/data
+      - minio_data_final:/data
     networks:
       - pipeline_network
 
-  # 2. My Data Warehouse (Serving Layer)
-  # Postgres is reliable for storing the final aggregated reports.
+  # 2. Data Warehouse (Postgres)
   postgres_warehouse:
     image: postgres:13
     container_name: postgres_db
@@ -40,18 +35,17 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./sql:/docker-entrypoint-initdb.d # This runs my schema.sql automatically
+      - pgdata_final:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin_user -d fraud_detection_db"]
       interval: 10s
       timeout: 5s
-      retries: 6
+      retries: 5
     networks:
       - pipeline_network
 
   # 3. Ingestion Service
-  # This runs my Python script to move data from local to MinIO.
   ingestion_service:
     build: ./src/ingestion
     container_name: python_ingestion
@@ -59,7 +53,7 @@ services:
       minio_storage:
         condition: service_healthy
     volumes:
-      - ./data:/app/data # Mounting my local data folder so the container can see it
+      - ./data:/app/data
     environment:
       MINIO_ENDPOINT: minio_storage:9000
       MINIO_ACCESS_KEY: admin_user
@@ -68,7 +62,6 @@ services:
       - pipeline_network
 
   # 4. Processing Service (Spark)
-  # This runs the heavy lifting (PySpark) logic.
   processing_service:
     build: ./src/processing
     container_name: spark_processing
@@ -87,15 +80,13 @@ services:
     networks:
       - pipeline_network
 
-  # 5. Airflow (Orchestration)
-  # I included this to demonstrate quarterly scheduling capability.
+  # 5. Airflow
   airflow:
     image: apache/airflow:2.6.3
     container_name: airflow_scheduler
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
-      # This ensures you can log in with airflow/airflow
       AIRFLOW__CORE__USERNAME: airflow 
       AIRFLOW__CORE__PASSWORD: airflow
     volumes:
@@ -106,8 +97,10 @@ services:
     networks:
       - pipeline_network
 
+# NEW VOLUMES DEFINITION
 volumes:
-  pgdata:
+  minio_data_final:
+  pgdata_final:
 
 networks:
   pipeline_network:
