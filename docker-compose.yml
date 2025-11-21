@@ -21,7 +21,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 6
     volumes:
       - minio_data:/data
     networks:
@@ -45,7 +45,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U admin_user -d fraud_detection_db"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 6
     networks:
       - pipeline_network
 
@@ -53,7 +53,7 @@ services:
   # This runs my Python script to move data from local to MinIO.
   ingestion_service:
     build: ./src/ingestion
-    container_name: my_ingestion_script
+    container_name: python_ingestion
     depends_on:
       minio_storage:
         condition: service_healthy
@@ -70,7 +70,7 @@ services:
   # This runs the heavy lifting (PySpark) logic.
   processing_service:
     build: ./src/processing
-    container_name: my_spark_job
+    container_name: spark_processing
     depends_on:
       minio_storage:
         condition: service_healthy
@@ -104,3 +104,11 @@ services:
     command: standalone 
     networks:
       - pipeline_network
+
+volumes:
+  minio_data:
+  pgdata:
+
+networks:
+  pipeline_network:
+    driver: bridge
