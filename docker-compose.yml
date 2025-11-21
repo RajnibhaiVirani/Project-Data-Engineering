@@ -94,17 +94,13 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
+      # This ensures you can log in with airflow/airflow
+      AIRFLOW__CORE__USERNAME: airflow 
+      AIRFLOW__CORE__PASSWORD: airflow
     volumes:
       - ./airflow/dags:/opt/airflow/dags
     ports:
       - "8080:8080"
+    command: standalone 
     networks:
       - pipeline_network
-
-volumes:
-  minio_data:
-  pgdata:
-
-networks:
-  pipeline_network:
-    driver: bridge
