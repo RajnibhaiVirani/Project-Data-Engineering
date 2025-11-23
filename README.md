@@ -145,9 +145,9 @@ Daily Trends        Location Performance   Domain Leaderboard
                  +------------------------+
                  |     Airflow (DAG)     |
                  +------------------------+
-
----
 ```
+---
+
 ## 📜 License
 
 Educational use only.
