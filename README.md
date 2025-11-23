@@ -48,26 +48,26 @@ Pipeline Stages:
 Project_Data_Engineering/
 │
 ├── data/
-│   └── bankdataset.csv
+│   └── bankdataset.csv          ← MUST BE HERE (Raw input data)
 │
-├── sql/
+├── sql/                         ← Database table definitions
 │   └── schema.sql
 │
 ├── airflow/
 │   └── dags/
-│       └── quarterly_dag.py
+│       └── quarterly_dag.py     ← Pipeline schedule definition
 │
 ├── src/
 │   ├── ingestion/
-│   │   ├── Dockerfile
-│   │   └── ingest.py
+│   │   ├── Dockerfile           ← Builds ingestion container
+│   │   └── ingest.py            ← Uploads data to Lake
 │   │
 │   └── processing/
-│       ├── Dockerfile
-│       └── spark_job.py
+│       ├── Dockerfile           ← Builds Spark container
+│       └── spark_job.py         ← Transforms and loads data
 │
-├── docker-compose.yml
-└── README.md
+├── docker-compose.yml           ← Defines system infrastructure
+└── README.md                    ← Project documentation guide
 ```
 ---
 
@@ -107,7 +107,7 @@ Expected Output:
 ## 🔍 Access Interfaces
 
 MinIO Console → http://localhost:9001  
-Airflow UI → http://localhost:8080  
+ 
 Postgres (psql) → admin_user / secure_password
 
 ---
