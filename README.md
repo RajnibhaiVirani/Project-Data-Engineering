@@ -5,7 +5,8 @@
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Spark 3.4.1](https://img.shields.io/badge/Spark-3.4.1-orange)](https://spark.apache.org/)
 [![License: Educational](https://img.shields.io/badge/license-Educational-lightgrey)](LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/RajnibhaiVirani/Project_Data_Engineering)](https://github.com/RajnibhaiVirani/Project-Data-Engineering.git)
+[![GitHub last commit](https://img.shields.io/github/last-commit/RajnibhaiVirani/Project-Data-Engineering)](https://github.com/RajnibhaiVirani/Project-Data-Engineering/commits/main)
+
 
 > A complete microservices-based batch processing pipeline using MinIO, PySpark, PostgreSQL, and Airflow.
 
@@ -18,13 +19,13 @@ This project implements a modular, containerized, end-to-end batch data engineer
 The components work together via Docker Compose, mirroring real-world industry data architectures.
 
 Pipeline Stages:
-1. Ingestion – Uploads bankdataset.csv from local storage into MinIO (S3-compatible).
-2. Processing – PySpark performs data cleaning and calculates:
+1. **Ingestion** – Uploads bankdataset.csv from local storage into MinIO (S3-compatible).
+2. **Processing** – PySpark performs data cleaning and calculates:
    - Daily domain transaction trends  
    - Location performance metrics  
    - Domain-level value leaderboard  
-3. Loading – Saves aggregated tables into PostgreSQL.
-4. Orchestration – Airflow DAG simulates quarterly scheduled runs.
+3. **Loading** – Saves aggregated tables into PostgreSQL.
+4. **Orchestration** – Airflow DAG simulates quarterly scheduled runs.
 
 ---
 
@@ -97,18 +98,11 @@ Project_Data_Engineering/
 ```
 
 Expected Output:
-- Ingestion → “File safely stored in MinIO”  
-- Processing → “Reports are live in PostgreSQL”  
+- **Ingestion** → “File safely stored in MinIO”  
+- **Processing** → “Reports are live in PostgreSQL”  
 
 ---
 
-## 🗄️ Generated Warehouse Tables
-
-rpt_daily_domain_trends – Daily average value per domain  
-rpt_location_performance – Location-level averages  
-rpt_domain_leaderboard – Ranked total value by domain  
-
----
 
 ## 🔍 Access Interfaces
 
@@ -118,25 +112,43 @@ Postgres (psql) → admin_user / secure_password
 
 ---
 
-## 🔄 Workflow Diagram (Mermaid)
+## 🔄 Workflow Diagram
 
-```bash
-flowchart LR
-    A[Local CSV File\n(bankdataset.csv)] --> B[Ingestion Service\n(Python + MinIO SDK)]
-    B --> C[MinIO Data Lake]
++------------------------------------------------+
+|          Local CSV File (bankdataset.csv)      |
++----------------------------+-------------------+
+                             |
+                             v
++------------------------------------------------+
+|   Ingestion Service (Python + MinIO SDK)       |
++----------------------------+-------------------+
+                             |
+                             v
++------------------------------------------------+
+|             MinIO Data Lake (S3)               |
++----------------------------+-------------------+
+                             |
+                             v
++------------------------------------------------+
+|      Processing Service (PySpark Engine)       |
++----------------------------+-------------------+
+      |                     |                     |
+      v                     v                     v
+Daily Trends        Location Performance   Domain Leaderboard
+       \\              |              //
+        \\             |             //
+                 +----------------+
+                 | PostgreSQL DB |
+                 +----------------+
+                             ^
+                             |
+                 +------------------------+
+                 |     Airflow (DAG)     |
+                 +------------------------+
 
-    C --> D[Processing Service\n(PySpark)]
-    D --> E1[Daily Domain Trends]
-    D --> E2[Location Performance]
-    D --> E3[Domain Leaderboard]
+---
 
-    E1 --> F[(PostgreSQL Warehouse)]
-    E2 --> F
-    E3 --> F
+## 📜 License
 
-    subgraph Airflow
-        G[Quarterly DAG]
-    end
+Educational use only.
 
-    G --> B
-    G --> D
