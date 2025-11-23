@@ -5,9 +5,9 @@
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Spark 3.4.1](https://img.shields.io/badge/Spark-3.4.1-orange)](https://spark.apache.org/)
 [![License: Educational](https://img.shields.io/badge/license-Educational-lightgrey)](LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/Project_Data_Engineering)]()
+[![GitHub last commit](https://img.shields.io/github/last-commit/RajnibhaiVirani/Project_Data_Engineering)]()
 
-> A complete microservices-based batch processing pipeline using MinIO, PySpark, PostgreSQL, and Airflow, developed for IU assignment DLMDSEDE02.
+> A complete microservices-based batch processing pipeline using MinIO, PySpark, PostgreSQL, and Airflow.
 
 ---
 
@@ -43,7 +43,7 @@ Pipeline Stages:
 ---
 
 ## 🗂️ Project Structure
-
+```bash
 Project_Data_Engineering/
 │
 ├── data/
@@ -67,7 +67,7 @@ Project_Data_Engineering/
 │
 ├── docker-compose.yml
 └── README.md
-
+```
 ---
 
 ## ⚙️ Technologies Used
@@ -92,7 +92,9 @@ Project_Data_Engineering/
    Project_Data_Engineering/data/bankdataset.csv
 
 3. Build & run all services:
+```bash
    docker-compose up --build
+```
 
 Expected Output:
 - Ingestion → “File safely stored in MinIO”  
@@ -118,7 +120,7 @@ Postgres (psql) → admin_user / secure_password
 
 ## 🔄 Workflow Diagram (Mermaid)
 
-```mermaid
+```bash
 flowchart LR
     A[Local CSV File\n(bankdataset.csv)] --> B[Ingestion Service\n(Python + MinIO SDK)]
     B --> C[MinIO Data Lake]
