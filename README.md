@@ -5,7 +5,7 @@
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Spark 3.4.1](https://img.shields.io/badge/Spark-3.4.1-orange)](https://spark.apache.org/)
 [![License: Educational](https://img.shields.io/badge/license-Educational-lightgrey)](LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/RajnibhaiVirani/Project_Data_Engineering)]()
+[![GitHub last commit](https://img.shields.io/github/last-commit/RajnibhaiVirani/Project_Data_Engineering)](https://github.com/RajnibhaiVirani/Project-Data-Engineering.git)
 
 > A complete microservices-based batch processing pipeline using MinIO, PySpark, PostgreSQL, and Airflow.
 
