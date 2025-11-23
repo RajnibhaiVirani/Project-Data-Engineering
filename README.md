@@ -113,7 +113,7 @@ Postgres (psql) → admin_user / secure_password
 ---
 
 ## 🔄 Workflow Diagram
-
+```bash
 +------------------------------------------------+
 |          Local CSV File (bankdataset.csv)      |
 +----------------------------+-------------------+
@@ -147,7 +147,7 @@ Daily Trends        Location Performance   Domain Leaderboard
                  +------------------------+
 
 ---
-
+```
 ## 📜 License
 
 Educational use only.
