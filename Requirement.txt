@@ -1,0 +1,17 @@
+apache-airflow==2.7.3
+apache-airflow-providers-postgres==5.5.0
+apache-airflow-providers-amazon==8.3.0
+
+pyspark==3.4.1
+py4j==0.10.9.7
+
+minio==7.2.2
+
+pandas==2.1.1
+numpy==1.26.0
+
+sqlalchemy==2.0.22
+psycopg2-binary==2.9.8
+
+requests==2.31.0
+python-dotenv==1.0.0
